@@ -8,7 +8,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.Test
 import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -45,9 +44,9 @@ class BaseViewModelTest {
         }
 
         val mockMainThreadName = "This is the mock main thread!"
-        val mockMainDispatcher = Executors.newSingleThreadExecutor(object : ThreadFactory {
-            override fun newThread(r: Runnable) = Thread(r, mockMainThreadName)
-        }).asCoroutineDispatcher()
+        val mockMainDispatcher =
+            Executors.newSingleThreadExecutor { r -> Thread(r, mockMainThreadName) }
+                .asCoroutineDispatcher()
         overrideMainDispatcher(mockMainDispatcher)
         val testee = ThreadTester()
 
