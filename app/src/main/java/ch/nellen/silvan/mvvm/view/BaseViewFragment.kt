@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ch.nellen.silvan.mvvm.viewmodel.BaseViewModel
@@ -17,6 +19,7 @@ abstract class BaseViewFragment : Fragment() {
     // Visibility "protected" because it's used in inline function.
     protected val viewModels = mutableSetOf<BaseViewModel>()
 
+    // Used internally, visibility "protected" because it's used in inline function.
     protected class BaseViewModelFactory<VM : BaseViewModel>(
         private val creator: (() -> VM),
         private val initializer: ((VM) -> Unit)?
@@ -89,6 +92,13 @@ abstract class BaseViewFragment : Fragment() {
      */
     @CallSuper
     protected open fun observeViewModel(viewModel: BaseViewModel) {
+    }
+
+    /**
+     * Utility function that observes live data using the correct lifecycle owner (see https://proandroiddev.com/5-common-mistakes-when-using-architecture-components-403e9899f4cb)
+     */
+    protected fun <T> observe(data: LiveData<T>, action: (T?) -> Unit) {
+        data.observe(viewLifecycleOwner, Observer(action))
     }
 
 }
