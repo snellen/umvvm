@@ -94,11 +94,4 @@ abstract class BaseViewFragment : Fragment() {
     protected open fun observeViewModel(viewModel: BaseViewModel) {
     }
 
-    /**
-     * Utility function that observes live data using the correct lifecycle owner (see https://proandroiddev.com/5-common-mistakes-when-using-architecture-components-403e9899f4cb)
-     */
-    protected fun <T> observe(data: LiveData<T>, action: (T?) -> Unit) {
-        data.observe(viewLifecycleOwner, Observer(action))
-    }
-
 }
