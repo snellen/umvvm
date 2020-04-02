@@ -1,4 +1,4 @@
-package ch.nellen.silvan.mvvm.usecase
+package ch.nellen.silvan.umvvm.usecase
 
 /**
  * Interface definition for use cases. A use case is a single purpose, reusable class that contains

@@ -1,4 +1,4 @@
-package ch.nellen.silvan.mvvm.view.util
+package ch.nellen.silvan.umvvm.view.util
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData

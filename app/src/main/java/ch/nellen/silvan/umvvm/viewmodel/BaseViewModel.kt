@@ -1,4 +1,4 @@
-package ch.nellen.silvan.mvvm.viewmodel
+package ch.nellen.silvan.umvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope

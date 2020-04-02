@@ -1,11 +1,11 @@
-package ch.nellen.silvan.mvvm.view
+package ch.nellen.silvan.umvvm.view
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ch.nellen.silvan.mvvm.viewmodel.BaseViewModel
+import ch.nellen.silvan.umvvm.viewmodel.BaseViewModel
 
 abstract class BaseViewActivity : FragmentActivity() {
     // Used internally to keep track of all the view models that were created and have to be observed.

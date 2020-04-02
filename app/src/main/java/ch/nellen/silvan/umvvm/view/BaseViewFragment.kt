@@ -1,17 +1,15 @@
-package ch.nellen.silvan.mvvm.view
+package ch.nellen.silvan.umvvm.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ch.nellen.silvan.mvvm.viewmodel.BaseViewModel
+import ch.nellen.silvan.umvvm.viewmodel.BaseViewModel
 
 /**
- * Base class for fragments that use this MVVM framework.
+ * Base class for fragments that use the uMVVM framework.
  */
 abstract class BaseViewFragment : Fragment() {
 
