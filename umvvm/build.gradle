@@ -4,13 +4,17 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'maven-publish'
+def artifactId = 'umvvm'
+def groupId = 'ch.nellen.silvan'
+
 android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,4 +35,18 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            library(MavenPublication) {
+                setGroupId groupId
+                setArtifactId artifactId
+                version android.defaultConfig.versionName
+
+                artifact bundleReleaseAar
+            }
+        }
+    }
 }
