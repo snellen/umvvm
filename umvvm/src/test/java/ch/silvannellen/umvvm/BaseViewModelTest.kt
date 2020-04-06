@@ -1,7 +1,7 @@
-package ch.nellen.silvan.umvvm
+package ch.silvannellen.umvvm
 
-import ch.nellen.silvan.umvvm.testutil.callOnCleared
-import ch.nellen.silvan.umvvm.viewmodel.BaseViewModel
+import ch.silvannellen.umvvm.testutil.callOnCleared
+import ch.silvannellen.umvvm.viewmodel.BaseViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain

@@ -1,4 +1,4 @@
-package ch.nellen.silvan.umvvm.testutil
+package ch.silvannellen.umvvm.testutil
 
 import androidx.lifecycle.ViewModel
 import kotlin.reflect.jvm.isAccessible
