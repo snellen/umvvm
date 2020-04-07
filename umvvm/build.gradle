@@ -9,7 +9,10 @@ def artifactId = 'umvvm'
 def groupId = 'ch.silvannellen'
 
 def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+def githubPropertiesFile = rootProject.file("github.properties")
+if(githubPropertiesFile.canRead()) {
+    githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+}
 
 android {
     compileSdkVersion 28
