@@ -8,13 +8,16 @@ apply plugin: 'maven-publish'
 def artifactId = 'umvvm'
 def groupId = 'ch.silvannellen'
 
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
 android {
     compileSdkVersion 28
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
-        versionName "0.2.0"
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,6 +42,16 @@ dependencies {
 
 project.afterEvaluate {
     publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/snellen/umvvm")
+                credentials {
+                    username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
+                    password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+                }
+            }
+        }
         publications {
             library(MavenPublication) {
                 setGroupId groupId
