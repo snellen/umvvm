@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ch.silvannellen.umvvm.viewmodel.BaseViewModel
 
+/**
+ * Base class for activities that use the uMVVM framework.
+ */
 abstract class BaseViewActivity : FragmentActivity() {
     // Used internally to keep track of all the view models that were created and have to be observed.
     // Visibility "protected" because it's used in inline function.
