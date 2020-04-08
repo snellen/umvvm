@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import ch.silvannellen.umvvm.view.internal.BaseViewModelFactory
 import ch.silvannellen.umvvm.viewmodel.BaseViewModel
 
 /**
@@ -17,15 +18,6 @@ abstract class BaseViewFragment : Fragment() {
     // Visibility "protected" because it's used in inline function.
     protected val viewModels = mutableSetOf<BaseViewModel>()
 
-    // Used internally, visibility "protected" because it's used in inline function.
-    protected class BaseViewModelFactory<VM : BaseViewModel>(
-        private val creator: (() -> VM),
-        private val initializer: ((VM) -> Unit)?
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>) =
-            creator().apply(initializer ?: {}) as T
-    }
-
     /**
      * Use this function to create view models in createViewModel().
      *
@@ -35,10 +27,12 @@ abstract class BaseViewFragment : Fragment() {
     protected inline fun <reified VM : BaseViewModel> createViewModel(
         noinline viewModelCreator: (() -> VM),
         noinline initializer: ((VM) -> Unit)? = null
-    ): VM = ViewModelProvider(
-        this,
-        BaseViewModelFactory(viewModelCreator, initializer)
-    ).get(VM::class.java).also { viewModels.add(it) }
+    ): VM = viewModels<VM>{
+        BaseViewModelFactory(
+            viewModelCreator,
+            initializer
+        )
+    }.value.also { viewModels.add(it) }
 
     /**
      * Use this function to create view models in createViewModel(). The view model returned by this method
@@ -51,14 +45,12 @@ abstract class BaseViewFragment : Fragment() {
     protected inline fun <reified VM : BaseViewModel> createActivityScopedViewModel(
         noinline viewModelCreator: (() -> VM),
         noinline initializer: ((VM) -> Unit)? = null
-    ): VM = activity?.run {
-        ViewModelProvider(
-            this,
-            BaseViewModelFactory(viewModelCreator, initializer)
-        ).get(VM::class.java).also { viewModels.add(it) }
-    }
-        ?: throw IllegalStateException("Cannot create activity scoped view model at this point in the Fragment lifecycle. This method is designed to be used inside createViewModels().")
-
+    ): VM = activityViewModels<VM> {
+        BaseViewModelFactory(
+            viewModelCreator,
+            initializer
+        )
+    }.value.also { viewModels.add(it) }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

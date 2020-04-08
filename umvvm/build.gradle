@@ -9,7 +9,10 @@ def artifactId = 'umvvm'
 def groupId = 'ch.silvannellen'
 
 def githubProperties = new Properties()
-githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+def githubPropertiesFile = rootProject.file("github.properties")
+if(githubPropertiesFile.canRead()) {
+    githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+}
 
 android {
     compileSdkVersion 28
@@ -17,7 +20,7 @@ android {
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -25,6 +28,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
@@ -34,6 +44,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.fragment:fragment-ktx:1.2.4'
+    implementation 'androidx.activity:activity-ktx:1.1.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinx_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"

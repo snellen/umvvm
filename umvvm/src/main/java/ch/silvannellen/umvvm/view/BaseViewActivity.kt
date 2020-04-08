@@ -1,12 +1,15 @@
 package ch.silvannellen.umvvm.view
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.annotation.CallSuper
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import ch.silvannellen.umvvm.view.internal.BaseViewModelFactory
 import ch.silvannellen.umvvm.viewmodel.BaseViewModel
 
+/**
+ * Base class for activities that use the uMVVM framework.
+ */
 abstract class BaseViewActivity : FragmentActivity() {
     // Used internally to keep track of all the view models that were created and have to be observed.
     // Visibility "protected" because it's used in inline function.
@@ -17,14 +20,6 @@ abstract class BaseViewActivity : FragmentActivity() {
      */
     protected abstract val layoutResourceId: Int
 
-    protected class BaseViewModelFactory<VM : BaseViewModel>(
-        private val creator: (() -> VM),
-        private val initializer: ((VM) -> Unit)?
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>) =
-            creator().apply(initializer ?: {}) as T
-    }
-
     /**
      * Use this function to create view models in createViewModel().
      *
@@ -34,10 +29,12 @@ abstract class BaseViewActivity : FragmentActivity() {
     protected inline fun <reified VM : BaseViewModel> createViewModel(
         noinline viewModelCreator: (() -> VM),
         noinline initializer: ((VM) -> Unit)? = null
-    ): VM = ViewModelProvider(
-        this,
-        BaseViewModelFactory(viewModelCreator, initializer)
-    ).get(VM::class.java).also { viewModels.add(it) }
+    ): VM = viewModels<VM> {
+        BaseViewModelFactory(
+            viewModelCreator,
+            initializer
+        )
+    }.value.also { viewModels.add(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
