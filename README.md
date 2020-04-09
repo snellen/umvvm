@@ -21,13 +21,13 @@ In a nutshell, the components can be described as follows (uMvvm class
 names in brackets):
 - The **View (BaseViewFragment/BaseViewActivity)** shows data to the
   user and receives user input
-- The **ViewModel (BaseViewModel)** holds the state and
-  exposes it to the view using LiveData. It exposes methods to react to
-  actions by the user and handles them by executing one or more
-  UseCase(s) and updating it's LiveData as a result.
-- A **UseCase (UseCase)** is a single purpose, reusable logic
-  block that implements some business rule. A complex ViewModel might be
-  composed of many UseCases.
+- The **ViewModel (BaseViewModel)** holds the state and exposes it to
+  the view using LiveData. It exposes methods to react to actions by the
+  user and handles them by executing one or more UseCase(s), updating
+  it's LiveData as a result.
+- A **UseCase (UseCase)** is a single purpose, reusable logic block that
+  implements the business rules. A complex ViewModel might be composed
+  of many UseCases.
 - The **Model** defines the domain models and contains repository
   interfaces though which the domain models are loaded, created and
   modified.
@@ -42,7 +42,7 @@ Follow the example at [uvvm-demo](https://github.com/snellen/umvvm-demo)
   ch.silvannellen.umvvm.usecase.UseCase
 
 Experience shows that ViewModels tend to get big. To minimise the size
-in a view model, any business logic is implemented in a UseCase.
+in a view model, move any business logic to a UseCase.
 
 ### UseCases and Running Code Off the Main/UI Thread
 In abstract terms, a **UseCase** is a component that takes an input and
@@ -77,7 +77,7 @@ launch {
 }
 ```
 In uMvvm, all coroutines launched in a ViewModel run on the main thread.
-The reasons for that are:
+The reasons for this are:
 1. To greatly reduce the risk of race conditions when updating the model
    state
 2. In most cases, the ViewModel updates some LiveData after executing a
@@ -86,7 +86,7 @@ The reasons for that are:
 
 Any coroutines launched in the ViewModel are cancelled when the view
 model is cleared. This is to ensure that no view model instances are
-leaked by a blocked background task that holds a reference to it.
+leaked by a blocked background task holding a reference to it.
 
 ## The uMvvm Brick House
 A more playful way to think of the componets in uMvvm is to imagine them
@@ -98,13 +98,13 @@ In that analogy, the walls (ViewModel) are composed by bricks
 (UseCases). They rest on the base (Model) and hold up the roof (View)
 which is exposed to the ~~weather~~ user.
 
-The logic implemented by the ViewModel consist od UseCases and some glue
+The logic implemented by the ViewModel consist of UseCases and some glue
 code between them. UseCases can build upon each other with one use case
 consuming the result returned by another. For example, the
 [SearchCommitsUseCase](https://github.com/snellen/umvvm-demo/blob/develop/app/src/main/java/ch/silvannellen/githubbrowser/usecase/searchcommits/SearchCommitsUseCase.kt)
 processes the result returned by the
 [LoadCommitsUseCase](https://github.com/snellen/umvvm-demo/blob/develop/app/src/main/java/ch/silvannellen/githubbrowser/usecase/loadcommits/LoadCommitsUseCase.kt)
-Also, the view never directly accesses the model (except for the domain
+The view never directly accesses the model (except for the domain
 objects), but only touches the view model.
 
 ## Testing
